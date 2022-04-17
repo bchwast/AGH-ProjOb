@@ -6,10 +6,10 @@ import static org.junit.Assert.assertEquals;
 
 public class PrisonerDatabaseTest {
 
-    private PrisonersDataProvider prisonersDataProvider = new PrisonersDataProvider();
+    private PrisonersDatabase prisonersDatabase = new PrisonersDatabase();
 
     @Test
     public void testThereAreThreeJails() {
-        assertEquals(3, prisonersDataProvider.getAllPrisons().size());
+        assertEquals(3, prisonersDatabase.getAllPrisons().size());
     }
 }

@@ -1,27 +1,32 @@
 package pl.edu.agh.to.lab4;
 
-public abstract class Suspect {
-    protected String name;
+abstract public class Suspect {
+    private final String firstname;
+    private final String lastname;
+    private final int age;
 
-    protected String surname;
-
-    protected int age;
-
-    public String getName() {
-        return name;
+    public Suspect(String firstname, String lastname, int age) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.age = age;
     }
 
-    public String getSurname() {
-        return surname;
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
     }
 
     public String display() {
-        return name + " " + surname;
+        return firstname + " " + lastname;
     }
+
+    public abstract boolean canBeAccused();
 
     public int getAge() {
         return age;
     }
-
-    public abstract boolean canBeAccused();
 }

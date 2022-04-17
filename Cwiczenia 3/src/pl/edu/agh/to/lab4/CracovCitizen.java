@@ -1,11 +1,8 @@
 package pl.edu.agh.to.lab4;
 
-public class CracovCitizen extends Suspect{
-
-    public CracovCitizen(String name, String surname, int age) {
-        this.age = age;
-        this.name = name;
-        this.surname = surname;
+public class CracovCitizen extends Suspect {
+    public CracovCitizen(String firstname, String lastname, int age) {
+        super(firstname, lastname, age);
     }
 
     @Override
