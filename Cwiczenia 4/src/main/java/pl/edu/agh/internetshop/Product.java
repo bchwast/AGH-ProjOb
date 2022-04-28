@@ -9,11 +9,27 @@ public class Product {
 	
     private final String name;
     private final BigDecimal price;
+    private final BigDecimal discountedPrice;
+    private final Discount discount;
 
     public Product(String name, BigDecimal price) {
         this.name = name;
         this.price = price;
         this.price.setScale(PRICE_PRECISION, ROUND_STRATEGY);
+        this.discount = new Discount(0);
+        this.discountedPrice = price;
+    }
+
+    public Product(String name, BigDecimal price, Discount discount) {
+        this.name = name;
+        this.price = price;
+        this.price.setScale(PRICE_PRECISION, ROUND_STRATEGY);
+        this.discount = discount;
+        this.discountedPrice = applyDiscountTo(price).setScale(PRICE_PRECISION, ROUND_STRATEGY);
+    }
+
+    private BigDecimal applyDiscountTo(BigDecimal price) {
+        return discount.applyTo(price);
     }
 
     public String getName() {
@@ -22,5 +38,9 @@ public class Product {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public BigDecimal getDiscountedPrice() {
+        return discountedPrice;
     }
 }

@@ -4,7 +4,7 @@ plugins {
 
 group = 'pl.edu.agh.iisg.to'
 version = '1.0.0-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = "1.9"
 
 repositories {
     mavenCentral()
@@ -22,3 +22,4 @@ test {
 }
 
 
+targetCompatibility = JavaVersion.VERSION_1_9

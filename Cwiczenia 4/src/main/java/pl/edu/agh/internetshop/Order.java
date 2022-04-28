@@ -1,22 +1,36 @@
 package pl.edu.agh.internetshop;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
 public class Order {
-    private static final BigDecimal TAX_VALUE = BigDecimal.valueOf(1.22);
+    private static final BigDecimal TAX_VALUE = BigDecimal.valueOf(1.23);
 	private final UUID id;
-    private final Product product;
+    private final List<Product> products;
     private boolean paid;
     private Shipment shipment;
     private ShipmentMethod shipmentMethod;
     private PaymentMethod paymentMethod;
+    private final Discount discount;
 
-    public Order(Product product) {
-        this.product = product;
+    public Order(List<Product> products, Discount discount) {
+        this.products = Objects.requireNonNull(products);
         id = UUID.randomUUID();
         paid = false;
+        this.discount = discount;
+    }
+    public Order(List<Product> products) {
+        this.products = Objects.requireNonNull(products);
+        id = UUID.randomUUID();
+        paid = false;
+        discount = new Discount(0);
+    }
+
+    private BigDecimal applyDiscountTo(BigDecimal price) {
+        return discount.applyTo(price);
     }
 
     public UUID getId() {
@@ -42,15 +56,23 @@ public class Order {
     }
 
     public BigDecimal getPrice() {
-        return product.getPrice();
+        return products.stream().map(Product::getPrice).reduce(BigDecimal.valueOf(0), BigDecimal::add).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
     }
 
     public BigDecimal getPriceWithTaxes() {
         return getPrice().multiply(TAX_VALUE).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
     }
 
-    public Product getProduct() {
-        return product;
+    public BigDecimal getPriceWithProductDiscount() {
+        return products.stream().map(Product::getDiscountedPrice).reduce(BigDecimal.valueOf(0), BigDecimal::add).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
+    }
+
+    public BigDecimal getPriceWithOrderDiscount() {
+        return applyDiscountTo(getPriceWithProductDiscount()).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     public ShipmentMethod getShipmentMethod() {
